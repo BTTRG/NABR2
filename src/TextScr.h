@@ -66,6 +66,7 @@ extern TEXT_SCRIPT gTS;
 
 extern const RECT gRect_line;
 
+unsigned extern int cion;
 /// Contains the latest value given through <MIM
 extern unsigned int gMIMCurrentNum;
 

@@ -38,6 +38,7 @@ equivalents.
 
 BOOL audio_backend_initialised;
 AudioBackend_Sound *lpSECONDARYBUFFER[SE_MAX];
+AudioBackend_Sound *lpDRAMBUFFER[8];
 
 // DirectSoundの開始 (Starting DirectSound)
 BOOL InitDirectSound(void)
@@ -229,7 +230,108 @@ BOOL LoadSoundObject(const char *file_name, int no)
 
 	return TRUE;
 }
+BOOL LoadDramObject(const char *file_name, int no)
+{
+	std::string path;
+	//unsigned long i;
+	unsigned long file_size = 0;
+	char check_box[58];
+	FILE *fp;
 
+	path = gModulePath + '/' + file_name;
+
+	if (!audio_backend_initialised)
+		return TRUE;
+
+	if ((fp = fopen(path.c_str(), "rb")) == NULL)
+		return FALSE;
+
+	/*fseek(fp, 0, SEEK_END);
+	file_size = ftell(fp);
+	rewind(fp);*/
+
+	// Let's not throttle disk I/O, shall we...
+	//for (i = 0; i < 58; i++)
+	//	fread(&check_box[i], sizeof(char), 1, fp);	// Holy hell, this is inefficient
+	fread(check_box, 1, 58, fp);
+
+#ifdef FIX_BUGS
+	// The original code forgets to close 'fp'
+	if (check_box[0] != 'R' || check_box[1] != 'I' || check_box[2] != 'F' || check_box[3] != 'F')
+	{
+		fclose(fp);
+		return FALSE;
+	}
+#else
+	if (check_box[0] != 'R')
+		return FALSE;
+	if (check_box[1] != 'I')
+		return FALSE;
+	if (check_box[2] != 'F')
+		return FALSE;
+	if (check_box[3] != 'F')
+		return FALSE;
+#endif
+
+	file_size = (check_box[4] << 0) | (check_box[5] << 8) | (check_box[6] << 16) | (check_box[7] << 24);
+	unsigned char *wp;
+	wp = (unsigned char*)malloc(file_size);	// ファイルのワークスペースを作る (Create a file workspace)
+
+#ifdef FIX_BUGS
+	if (wp == NULL)
+	{
+		fclose(fp);
+		return FALSE;
+	}
+#endif
+
+	fseek(fp, 0, SEEK_SET);
+
+	// Bloody hell, Pixel, come on...
+	//for (i = 0; i < file_size; i++)
+	//	fread((BYTE*)wp+i, sizeof(char), 1, fp);	// Pixel, stahp
+	fread(wp, 1, file_size, fp);
+
+	fclose(fp);
+
+	// Get sound properties, and check if it's valid
+	unsigned long buffer_size = file_size - 58;
+	unsigned short format = wp[0x14] | (wp[0x15] << 8);
+	unsigned short channels = wp[0x16] | (wp[0x17] << 8);
+	unsigned long sample_rate = wp[0x18] | (wp[0x19] << 8) | (wp[0x1A] << 16) | (wp[0x1B] << 24);
+	unsigned short bits_per_sample = wp[0x22] | (wp[0x23] << 8);
+
+	if (format != 1)	// 1 is WAVE_FORMAT_PCM
+	{
+		free(wp);
+		return FALSE;
+	}
+
+	if (channels != 1)	// The mixer only supports mono right now
+	{
+		free(wp);
+		return FALSE;
+	}
+
+	if (bits_per_sample != 8)	// The mixer only supports 8-bit unsigned samples
+	{
+		free(wp);
+		return FALSE;
+	}
+
+	// セカンダリバッファの生成 (Create secondary buffer)
+	lpDRAMBUFFER[no] = AudioBackend_CreateSound(sample_rate, wp + 0x3A, buffer_size);
+
+	if (lpDRAMBUFFER[no] == NULL)
+	{
+		free(wp);
+		return FALSE;	
+	}
+	
+	free(wp);
+
+	return TRUE;
+}
 void PlaySoundObject(int no, SoundMode mode)
 {
 	if (!audio_backend_initialised)

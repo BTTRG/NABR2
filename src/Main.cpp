@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 		FreeBitmap(cursor_rgba_pixels);
 	}
 
-	if (IsKeyFile("fps"))
+	//if (IsKeyFile("fps"))
 		bFPS = TRUE;
 
 	// Set rects

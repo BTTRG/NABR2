@@ -1,10 +1,3 @@
-// THIS IS DECOMPILED PROPRIETARY CODE - USE AT YOUR OWN RISK.
-//
-// The original code belongs to Daisuke "Pixel" Amaya.
-//
-// Modifications and custom code are under the MIT licence.
-// See LICENCE.txt for details.
-
 #include "MycParam.h"
 
 #include <stddef.h>
@@ -44,9 +37,28 @@ ARMS_LEVEL gArmsLevelTable[14] =
 	{{40, 60, 200}}
 };
 
+
+void SetDestroyMyChar(int x, int y, int w, int num)
+{
+	int i;
+	int offset_x;
+	int offset_y;
+
+	// Create smoke
+	w /= 0x200;
+	for (i = 0; i < num; ++i)
+	{
+		offset_x = Random(-w, w) * 0x200;
+		offset_y = Random(-w, w) * 0x200;
+		SetNpChar(4, x + offset_x, y + offset_y, 0, 0, 1, NULL, 0x100);//SetNpChar(NPC_SMOKE, x + offset_x, y + offset_y, 0, 0, 0, NULL, 0x100);
+	}
+
+	// Flash effect
+	SetCaret(x, y, 12, 0);
+}
 void AddExpMyChar(int x)
 {
-	int lv = gArmsData[gSelectedArms].level - 1;
+	/*int lv = gArmsData[gSelectedArms].level - 1;
 	int arms_code = gArmsData[gSelectedArms].code;
 
 	gArmsData[gSelectedArms].exp += x;
@@ -76,21 +88,32 @@ void AddExpMyChar(int x)
 				if (gArmsData[gSelectedArms].code != 13)
 				{
 					PlaySoundObject(27, SOUND_MODE_PLAY);
-					SetCaret(gMC.x, gMC.y, CARET_LEVEL_UP, DIR_LEFT);
+					SetCaret(gMC.x, gMC.y, 10, 0);
 				}
 			}
 		}
+		if (gArmsData[gSelectedArms].code != 13)
+		{
+			gMC.exp_count += x;
+			gMC.exp_wait = 30;
+		}
+		else
+		{
+			gMC.exp_wait = 10;
+			gArmsData[gSelectedArms].level = 1;
+			gArmsData[gSelectedArms].exp = 0;
+		}
+	}*/
+	cion += x;
+	/*if (x == 1) {
+		SetCaret(gMC.x, gMC.y, 21, 0);
 	}
-
-	if (gArmsData[gSelectedArms].code != 13)
-	{
-		gMC.exp_count += x;
-		gMC.exp_wait = 30;
+	else if (x == 3) {
+		SetCaret(gMC.x, gMC.y, 22, 0);
 	}
-	else
-	{
-		gMC.exp_wait = 10;
-	}
+	else if (x == 8) {
+		SetCaret(gMC.x, gMC.y, 23, 0);
+	}*/
 }
 
 void ZeroExpMyChar(void)
@@ -119,7 +142,7 @@ void DamageMyChar(int damage)
 #ifdef FIX_BUGS
 	if (!(g_GameFlags & 2))
 #else
-	// I'm preeeetty sure this is a typo. The Linux port optimised this entire check out.
+	// I'm preeeetty sure this is a typo. The Linux port optimised it out.
 	if (!(g_GameFlags | 2))
 #endif
 		return;
@@ -166,7 +189,7 @@ void DamageMyChar(int damage)
 			gArmsData[gSelectedArms].exp = gArmsLevelTable[arms_code].exp[lv] + gArmsData[gSelectedArms].exp;
 
 			if (gMC.life > 0 && gArmsData[gSelectedArms].code != 13)
-				SetCaret(gMC.x, gMC.y, CARET_LEVEL_UP, DIR_RIGHT);
+				SetCaret(gMC.x, gMC.y, 10, 2);
 		}
 		else
 		{
@@ -182,7 +205,7 @@ void DamageMyChar(int damage)
 	{
 		PlaySoundObject(17, SOUND_MODE_PLAY);
 		gMC.cond = 0;
-		SetDestroyNpChar(gMC.x, gMC.y, 10 * 0x200, 0x40);
+		SetDestroyMyChar(gMC.x, gMC.y, 0x1400, 0x40);
 		StartTextScript(40);
 	}
 }
@@ -240,25 +263,30 @@ void AddMaxLifeMyChar(int val)
 	gMC.lifeBr = gMC.life;
 }
 
+void PutActiveArmsList(void)
+{
+	RECT rect = {0, 0, 0, 16};
+
+	// Draw icon
+	rect.left = gArmsData[gSelectedArms].code * 32;
+	rect.right = rect.left + 32;
+	// Put your X and Y values here
+
+	PutBitmap3(&grcGame, PixelToScreenCoord(16), PixelToScreenCoord(16), &rect, SURFACE_ID_ARMS_IMAGE);
+
+}
 void PutArmsEnergy(BOOL flash)
 {
 	static unsigned char add_flash;
 
-	RECT rcPer = {72, 48, 80, 56};
-	RECT rcLv = {80, 80, 96, 88};
-	RECT rcView = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
-	RECT rcNone = {80, 48, 96, 56};
-
-	if (gArmsEnergyX > 16)
-		gArmsEnergyX -= 2;
-	if (gArmsEnergyX < 16)
-		gArmsEnergyX += 2;
+	RECT rcPer = { 72, 48, 80, 56 };
+	RECT rcView = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+	RECT rcNone = { 80, 48, 96, 56 };
 
 	// Draw max ammo
 	if (gArmsData[gSelectedArms].max_num)
 	{
-		PutNumber4(gArmsEnergyX + 32, 16, gArmsData[gSelectedArms].num, FALSE);
-		PutNumber4(gArmsEnergyX + 32, 24, gArmsData[gSelectedArms].max_num, FALSE);
+		PutNumber4(32, 24, gArmsData[gSelectedArms].num, FALSE);
 	}
 	else
 	{
@@ -270,115 +298,46 @@ void PutArmsEnergy(BOOL flash)
 	if (flash == TRUE && (gMC.shock / 2) % 2)
 		return;
 
-	PutBitmap3(&rcView, PixelToScreenCoord(gArmsEnergyX + 32), PixelToScreenCoord(24), &rcPer, SURFACE_ID_TEXT_BOX);
-	PutBitmap3(&rcView, PixelToScreenCoord(gArmsEnergyX), PixelToScreenCoord(32), &rcLv, SURFACE_ID_TEXT_BOX);
-	PutNumber4(gArmsEnergyX - 8, 32, gArmsData[gSelectedArms].level, FALSE);
-
-	RECT rcExpBox = {0, 72, 40, 80};
-	RECT rcExpVal = {0, 80, 0, 88};
-	RECT rcExpMax = {40, 72, 80, 80};
-	RECT rcExpFlash = {40, 80, 80, 88};
-
 	int lv = gArmsData[gSelectedArms].level - 1;
 
-#ifdef FIX_MAJOR_BUGS
+#ifdef FIX_BUGS
 	// When the player has no weapons, the default level is 0, which becomes -1.
 	// Catch it, and set it to 0 instead, so the following array-accesses aren't
 	// out-of-bounds.
 	if (lv < 0)
 		lv = 0;
 #endif
-
-	int arms_code = gArmsData[gSelectedArms].code;
-	int exp_now = gArmsData[gSelectedArms].exp;
-	int exp_next = gArmsLevelTable[arms_code].exp[lv];
-
-	PutBitmap3(&rcView, PixelToScreenCoord(gArmsEnergyX + 24), PixelToScreenCoord(32), &rcExpBox, SURFACE_ID_TEXT_BOX);
-
-	if (lv == 2 && gArmsData[gSelectedArms].exp == gArmsLevelTable[arms_code].exp[lv])
-	{
-		PutBitmap3(&rcView, PixelToScreenCoord(gArmsEnergyX + 24), PixelToScreenCoord(32), &rcExpMax, SURFACE_ID_TEXT_BOX);
-	}
-	else
-	{
-		if (exp_next != 0)
-			rcExpVal.right += (exp_now * 40) / exp_next;
-		else
-			rcExpVal.right = 0;
-
-		PutBitmap3(&rcView, PixelToScreenCoord(gArmsEnergyX + 24), PixelToScreenCoord(32), &rcExpVal, SURFACE_ID_TEXT_BOX);
-	}
-
-	if (gMC.exp_wait && ((add_flash++ / 2) % 2))
-		PutBitmap3(&rcView, PixelToScreenCoord(gArmsEnergyX + 24), PixelToScreenCoord(32), &rcExpFlash, SURFACE_ID_TEXT_BOX);
 }
-
-void PutActiveArmsList(void)
-{
-	int x;
-	int a;
-	RECT rect = {0, 0, 0, 16};
-
-	int arms_num = 0;
-	while (gArmsData[arms_num].code != 0)
-		++arms_num;
-
-	if (arms_num == 0)
-		return;
-
-	for (a = 0; a < arms_num; ++a)
-	{
-		// Get X position to draw at
-		x = ((a - gSelectedArms) * 16) + gArmsEnergyX;
-
-		if (x < 8)
-			x += 48 + (arms_num * 16);
-		else if (x >= 24)
-			x += 48;
-
-		if (x >= 72 + ((arms_num - 1) * 16))
-			x -= 48 + (arms_num * 16);
-		if (x < 72 && x >= 24)
-			x -= 48;
-
-		// Draw icon
-		rect.left = gArmsData[a].code * 16;
-		rect.right = rect.left + 16;
-		PutBitmap3(&grcGame, PixelToScreenCoord(x), PixelToScreenCoord(16), &rect, SURFACE_ID_ARMS_IMAGE);
-	}
-}
-
 void PutMyLife(BOOL flash)
 {
-	RECT rcCase = {0, 40, 232, 48};
-	RECT rcLife = {0, 24, 232, 32};
-	RECT rcBr = {0, 32, 232, 40};
+	static unsigned int add_flash;
 
-	if (flash == TRUE && gMC.shock / 2 % 2)
+	RECT rcLife[2] = {
+		{120, 112, 128, 120},
+		{112, 112, 120, 120},
+	};
+	if (flash == TRUE && (gMC.shock / 2) % 2 && gMC.life != 1)
 		return;
-
-	if (gMC.lifeBr < gMC.life)
-		gMC.lifeBr = gMC.life;
-
-	if (gMC.lifeBr > gMC.life)
+	if (flash == TRUE && gMC.life == 1 && ((add_flash++ / 2) % 2))
+		return;
+	for (int i = 0; i < gMC.max_life - 1; i++) // For every 1 in max life, add 1 to i, and run the following code
 	{
-		if (++gMC.lifeBr_count > 30)
-			--gMC.lifeBr;
+		// Put a heart
+		PutBitmap3(
+			&grcGame, // Target
+			// On the next two lines TT7 forgot PixelToScreenCoord, which is needed for the PutBitmap to work on resolutions other than 1x 
+			PixelToScreenCoord(16 + (8 * i)), // X position, offset by 8 for every 1 in i
+			PixelToScreenCoord(225), // Y position,
+			& rcLife[gMC.life - 1 > i], // Which rect to use, 'gMC.life - 1 > i' checks if  the current heart that is being drawn is full or not, returns 0 if it's not and 1 if it is
+			SURFACE_ID_TEXT_BOX); // Surface
 	}
-	else
-	{
-		gMC.lifeBr_count = 0;
-	}
+}
 
-	// Draw bar
-	rcCase.right = 64;
-	rcLife.right = ((gMC.life * 40) / gMC.max_life) - 1;
-	rcBr.right = ((gMC.lifeBr * 40) / gMC.max_life) - 1;
-
-	PutBitmap3(&grcGame, PixelToScreenCoord(16), PixelToScreenCoord(40), &rcCase, SURFACE_ID_TEXT_BOX);
-	PutBitmap3(&grcGame, PixelToScreenCoord(40), PixelToScreenCoord(40), &rcBr, SURFACE_ID_TEXT_BOX);
-	PutBitmap3(&grcGame, PixelToScreenCoord(40), PixelToScreenCoord(40), &rcLife, SURFACE_ID_TEXT_BOX);
-	PutNumber4(8, 40, gMC.lifeBr, FALSE);
+void PutCion()
+{
+	RECT rcCion = {208, 112, 226, 118};
+	PutBitmap3(&grcGame, PixelToScreenCoord(51), PixelToScreenCoord(218), &rcCion, SURFACE_ID_TEXT_BOX);
+	PutNumber4(17, 217, cion, FALSE);
 }
 
 void PutMyAir(int x, int y)

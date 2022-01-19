@@ -89,8 +89,8 @@ void PutNumber4(int x, int y, int value, BOOL bZero)
 	int offset;
 
 	// Limit value
-	if (value > 69420)
-		value = 69420;
+	if (value > 9999)
+		value = 9999;
 
 	// Go through number and draw digits
 	offset = 0;
@@ -764,6 +764,7 @@ static int ModeAction(void)
 		if (g_GameFlags & 2)
 		{
 			PutMyLife(TRUE);
+			PutCion();
 			PutArmsEnergy(TRUE);
 			PutMyAir((WINDOW_WIDTH / 2) - 40, (WINDOW_HEIGHT / 2) - 16);
 			PutActiveArmsList();

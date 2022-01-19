@@ -89,6 +89,7 @@ BOOL SaveProfile(const char *name)
 	memcpy(profile.permitstage, gPermitStage, sizeof(profile.permitstage));
 	memcpy(profile.permit_mapping, gMapping, sizeof(profile.permit_mapping));
 	memcpy(profile.flags, gFlagNPC, sizeof(profile.flags));
+	profile.cion = cion;
 	// Custom
 	memcpy(profile.extra_code, gProfileCodeExtra, sizeof(profile.extra_code));
 	profile.MIMCurrentNum = gMIMCurrentNum;
@@ -130,6 +131,7 @@ BOOL SaveProfile(const char *name)
 	fwrite(profile.permit_mapping, 0x80, 1, fp);
 	fwrite(FLAG, 4, 1, fp);
 	fwrite(profile.flags, 1000, 1, fp);
+	File_WriteLE32(profile.cion, fp);
 	// Custom
 	fwrite(gProfileCodeExtra, 0x10, 1, fp);
 	File_WriteLE32(profile.MIMCurrentNum, fp);
@@ -218,6 +220,7 @@ BOOL LoadProfile(const char *name)
 	fread(profile.permit_mapping, 0x80, 1, fp);
 	fread(profile.FLAG, 4, 1, fp);
 	fread(profile.flags, 1000, 1, fp);
+	profile.cion = File_ReadLE32(fp);
 
 	// Custom
 	fread(profile.extra_code, 0x10, 1, fp);
@@ -275,6 +278,7 @@ BOOL LoadProfile(const char *name)
 	gMC.star = profile.star;
 	gMC.cond = 0x80;
 	gMC.air = 1000;
+	cion = profile.cion;
 	gMC.lifeBr = profile.life;
 	gMC.x = profile.x;
 	gMC.y = profile.y;
