@@ -183,7 +183,7 @@ int StageSelectLoop(int *p_event)
 	{
 		GetTrg();
 
-		if (gKey & KEY_PAUSE)
+		/*if (gKey & KEY_PAUSE)
 		{
 			switch (Call_Pause())
 			{
@@ -193,7 +193,7 @@ int StageSelectLoop(int *p_event)
 				case enum_ESCRETURN_restart:
 					return enum_ESCRETURN_restart;
 			}
-		}
+		}*/
 
 		if (gKey & KEY_ESCAPE)
 		{

@@ -99,7 +99,7 @@ int MiniMapLoop(void)
 	{
 		GetTrg();
 
-		if (gKey & KEY_PAUSE)
+		/*if (gKey & KEY_PAUSE)
 		{
 			switch (Call_Pause())
 			{
@@ -109,7 +109,7 @@ int MiniMapLoop(void)
 				case enum_ESCRETURN_restart:
 					return enum_ESCRETURN_restart;
 			}
-		}
+		}*/
 
 		if (gKey & KEY_ESCAPE)
 		{
@@ -158,7 +158,7 @@ int MiniMapLoop(void)
 		if (gKeyTrg & (gKeyOk | gKeyCancel))
 			break;
 
-		if (gKey & KEY_PAUSE)
+		/*if (gKey & KEY_PAUSE)
 		{
 			switch (Call_Pause())
 			{
@@ -168,7 +168,7 @@ int MiniMapLoop(void)
 				case enum_ESCRETURN_restart:
 					return enum_ESCRETURN_restart;
 			}
-		}
+		}*/
 
 		if (gKey & KEY_ESCAPE)
 		{
@@ -214,7 +214,7 @@ int MiniMapLoop(void)
 	{
 		GetTrg();
 
-		if (gKey & KEY_PAUSE)
+		/*if (gKey & KEY_PAUSE)
 		{
 			switch (Call_Pause())
 			{
@@ -224,7 +224,7 @@ int MiniMapLoop(void)
 				case enum_ESCRETURN_restart:
 					return enum_ESCRETURN_restart;
 			}
-		}
+		}*/
 
 		if (gKey & KEY_ESCAPE)
 		{

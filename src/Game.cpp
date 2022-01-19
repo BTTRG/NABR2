@@ -89,8 +89,8 @@ void PutNumber4(int x, int y, int value, BOOL bZero)
 	int offset;
 
 	// Limit value
-	if (value > 9999)
-		value = 9999;
+	if (value > 69420)
+		value = 69420;
 
 	// Go through number and draw digits
 	offset = 0;
@@ -214,7 +214,7 @@ static int ModeOpening(void)
 		// Get pressed keys
 		GetTrg();
 
-		if (gKey & KEY_PAUSE)
+		/*if (gKey & KEY_PAUSE)
 		{
 			switch (Call_Pause())
 			{
@@ -224,7 +224,7 @@ static int ModeOpening(void)
 				case enum_ESCRETURN_restart:
 					return 1;
 			}
-		}
+		}*/
 
 		// Escape menu
 		if (gKey & KEY_ESCAPE)
@@ -440,7 +440,7 @@ static int ModeTitle(void)
 			}
 		}
 
-		if (gKey & KEY_PAUSE)
+		/*if (gKey & KEY_PAUSE)
 		{
 			switch (Call_Pause())
 			{
@@ -450,7 +450,7 @@ static int ModeTitle(void)
 				case enum_ESCRETURN_restart:
 					return 1;
 			}
-		}
+		}*/
 
 		if (gKey & KEY_ESCAPE)
 		{
@@ -615,7 +615,7 @@ static int ModeAction(void)
 		// Get pressed keys
 		GetTrg();
 
-		if (gKey & KEY_PAUSE)
+		/*if (gKey & KEY_PAUSE)
 		{
 			switch (Call_Pause())
 			{
@@ -625,7 +625,7 @@ static int ModeAction(void)
 				case enum_ESCRETURN_restart:
 					return 1;
 			}
-		}
+		}*/
 
 		// Escape menu
 		if (gKey & KEY_ESCAPE)

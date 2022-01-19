@@ -453,7 +453,7 @@ int CampLoop(void)
 	{
 		GetTrg();
 
-		if (gKeyTrg & KEY_PAUSE)
+		/*if (gKeyTrg & KEY_PAUSE)
 		{
 			switch (Call_Pause())
 			{
@@ -463,7 +463,7 @@ int CampLoop(void)
 				case enum_ESCRETURN_restart:
 					return enum_ESCRETURN_restart;	// Go to game intro
 			}
-		}
+		}*/
 
 		// Handle ESC
 		if (gKeyTrg & KEY_ESCAPE)
