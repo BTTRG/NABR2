@@ -272,7 +272,8 @@ void PutActiveArmsList(void)
 	rect.right = rect.left + 32;
 	// Put your X and Y values here
 
-	PutBitmap3(&grcGame, PixelToScreenCoord(16), PixelToScreenCoord(16), &rect, SURFACE_ID_ARMS_IMAGE);
+	PutBitmap3(&grcGame, PixelToScreenCoord(WINDOW_WIDTH - 40), PixelToScreenCoord(16), &rect, SURFACE_ID_ARMS_IMAGE);
+	PutNumber4(WINDOW_WIDTH - 40, 32, gArmsData[gSelectedArms].num, FALSE);
 
 }
 void PutArmsEnergy(BOOL flash)
@@ -286,7 +287,7 @@ void PutArmsEnergy(BOOL flash)
 	// Draw max ammo
 	if (gArmsData[gSelectedArms].max_num)
 	{
-		PutNumber4(32, 24, gArmsData[gSelectedArms].num, FALSE);
+		//PutNumber4(32, 24, gArmsData[gSelectedArms].num, FALSE);
 	}
 	else
 	{
@@ -336,8 +337,8 @@ void PutMyLife(BOOL flash)
 void PutCion()
 {
 	RECT rcCion = {128, 112, 152, 120};
-	PutBitmap3(&grcGame, PixelToScreenCoord(8), PixelToScreenCoord(8), &rcCion, SURFACE_ID_TEXT_BOX);
-	PutNumber4(16, 16, cion, FALSE);
+	PutBitmap3(&grcGame, PixelToScreenCoord(32), PixelToScreenCoord(16), &rcCion, SURFACE_ID_TEXT_BOX);
+	PutNumber4(0, 16, cion, FALSE);
 }
 
 void PutMyAir(int x, int y)

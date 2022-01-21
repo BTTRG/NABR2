@@ -1,10 +1,3 @@
-// THIS IS DECOMPILED PROPRIETARY CODE - USE AT YOUR OWN RISK.
-//
-// The original code belongs to Daisuke "Pixel" Amaya.
-//
-// Modifications and custom code are under the MIT licence.
-// See LICENCE.txt for details.
-
 #include "Shoot.h"
 
 #include "WindowsWrapper.h"
@@ -12,7 +5,6 @@
 #include "ArmsItem.h"
 #include "Bullet.h"
 #include "Caret.h"
-#include "CommonDefines.h"
 #include "KeyControl.h"
 #include "MyChar.h"
 #include "MycParam.h"
@@ -55,12 +47,12 @@ void ShootBullet_Frontia1(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y - (10 * 0x200), 1);
-					SetCaret(gMC.x - (3 * 0x200), gMC.y - (10 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (3 * 0x200), gMC.y - (10 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y - (10 * 0x200), 1);
-					SetCaret(gMC.x + (3 * 0x200), gMC.y - (10 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (3 * 0x200), gMC.y - (10 * 0x200), 3, 0);
 				}
 			}
 			else if (gMC.down)
@@ -68,12 +60,12 @@ void ShootBullet_Frontia1(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y + (10 * 0x200), 3);
-					SetCaret(gMC.x - (3 * 0x200), gMC.y + (10 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (3 * 0x200), gMC.y + (10 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y + (10 * 0x200), 3);
-					SetCaret(gMC.x + (3 * 0x200), gMC.y + (10 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (3 * 0x200), gMC.y + (10 * 0x200), 3, 0);
 				}
 			}
 			else
@@ -81,12 +73,12 @@ void ShootBullet_Frontia1(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (6 * 0x200), gMC.y + (2 * 0x200), 0);
-					SetCaret(gMC.x - (12 * 0x200), gMC.y + (2 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (12 * 0x200), gMC.y + (2 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (6 * 0x200), gMC.y + (2 * 0x200), 2);
-					SetCaret(gMC.x + (12 * 0x200), gMC.y + (2 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (12 * 0x200), gMC.y + (2 * 0x200), 3, 0);
 				}
 			}
 
@@ -106,11 +98,11 @@ void ShootBullet_PoleStar(int level)
 			break;
 
 		case 2:
-			bul_no = 5;
+			bul_no = 4;
 			break;
 
 		case 3:
-			bul_no = 6;
+			bul_no = 4;
 			break;
 	}
 
@@ -130,12 +122,12 @@ void ShootBullet_PoleStar(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 				}
 			}
 			else if (gMC.down)
@@ -143,12 +135,12 @@ void ShootBullet_PoleStar(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 				}
 			}
 			else
@@ -156,12 +148,12 @@ void ShootBullet_PoleStar(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (6 * 0x200), gMC.y + (3 * 0x200), 0);
-					SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (6 * 0x200), gMC.y + (3 * 0x200), 2);
-					SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 				}
 			}
 
@@ -190,14 +182,14 @@ void ShootBullet_FireBall(int level)
 			if (CountArmsBullet(3) > 2)
 				return;
 
-			bul_no = 8;
+			bul_no = 7;
 			break;
 
 		case 3:
 			if (CountArmsBullet(3) > 3)
 				return;
 
-			bul_no = 9;
+			bul_no = 7;
 			break;
 	}
 
@@ -214,12 +206,12 @@ void ShootBullet_FireBall(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (4 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x - (4 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (4 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (4 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x + (4 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (4 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 				}
 			}
 			else if (gMC.down)
@@ -227,12 +219,12 @@ void ShootBullet_FireBall(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (4 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x - (4 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (4 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (4 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x + (4 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (4 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 				}
 			}
 			else
@@ -240,12 +232,12 @@ void ShootBullet_FireBall(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (6 * 0x200), gMC.y + (2 * 0x200), 0);
-					SetCaret(gMC.x - (12 * 0x200), gMC.y + (2 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (12 * 0x200), gMC.y + (2 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (6 * 0x200), gMC.y + (2 * 0x200), 2);
-					SetCaret(gMC.x + (12 * 0x200), gMC.y + (2 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (12 * 0x200), gMC.y + (2 * 0x200), 3, 0);
 				}
 			}
 
@@ -265,7 +257,7 @@ void ShootBullet_Machinegun1(int level)
 	switch (level)
 	{
 		case 1:
-			bul_no = 10;
+			bul_no = 11;
 			break;
 
 		case 2:
@@ -273,7 +265,7 @@ void ShootBullet_Machinegun1(int level)
 			break;
 
 		case 3:
-			bul_no = 12;
+			bul_no = 11;
 			break;
 	}
 
@@ -293,7 +285,7 @@ void ShootBullet_Machinegun1(int level)
 
 			if (empty == 0)
 			{
-				SetCaret(gMC.x, gMC.y, CARET_EMPTY, DIR_LEFT);
+				SetCaret(gMC.x, gMC.y, 16, 0);
 				empty = 50;
 			}
 
@@ -308,12 +300,12 @@ void ShootBullet_Machinegun1(int level)
 			if (gMC.direct == 0)
 			{
 				SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y - (8 * 0x200), 1);
-				SetCaret(gMC.x - (3 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (3 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y - (8 * 0x200), 1);
-				SetCaret(gMC.x + (3 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (3 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 			}
 		}
 		else if (gMC.down)
@@ -334,12 +326,12 @@ void ShootBullet_Machinegun1(int level)
 			if (gMC.direct == 0)
 			{
 				SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y + (8 * 0x200), 3);
-				SetCaret(gMC.x - (3 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (3 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y + (8 * 0x200), 3);
-				SetCaret(gMC.x + (3 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (3 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 			}
 		}
 		else
@@ -347,12 +339,12 @@ void ShootBullet_Machinegun1(int level)
 			if (gMC.direct == 0)
 			{
 				SetBullet(bul_no, gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), 0);
-				SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(bul_no, gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), 2);
-				SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 			}
 		}
 
@@ -370,7 +362,7 @@ void ShootBullet_Machinegun1(int level)
 			if (wait > 1)
 			{
 				wait = 0;
-				ChargeArmsEnergy(1);
+				//ChargeArmsEnergy(1);
 			}
 		}
 		else
@@ -378,7 +370,7 @@ void ShootBullet_Machinegun1(int level)
 			if (wait > 4)
 			{
 				wait = 0;
-				ChargeArmsEnergy(1);
+				//ChargeArmsEnergy(1);
 			}
 		}
 	}
@@ -397,11 +389,11 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 				break;
 
 			case 2:
-				bul_no = 29;
+				bul_no = 28;
 				break;
 
 			case 3:
-				bul_no = 30;
+				bul_no = 28;
 				break;
 		}
 
@@ -445,11 +437,11 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 				break;
 
 			case 2:
-				bul_no = 14;
+				bul_no = 13;
 				break;
 
 			case 3:
-				bul_no = 15;
+				bul_no = 13;
 				break;
 		}
 
@@ -494,7 +486,7 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 
 				if (empty == 0)
 				{
-					SetCaret(gMC.x, gMC.y, CARET_EMPTY, DIR_LEFT);
+					SetCaret(gMC.x, gMC.y, 16, 0);
 					empty = 50;
 				}
 
@@ -506,12 +498,12 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 				}
 			}
 			else if (gMC.down)
@@ -519,12 +511,12 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 				}
 			}
 			else
@@ -532,12 +524,12 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (6 * 0x200), gMC.y, 0);
-					SetCaret(gMC.x - (12 * 0x200), gMC.y, CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (12 * 0x200), gMC.y, 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (6 * 0x200), gMC.y, 2);
-					SetCaret(gMC.x + (12 * 0x200), gMC.y, CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (12 * 0x200), gMC.y, 3, 0);
 				}
 			}
 		}
@@ -549,7 +541,7 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 
 				if (empty == 0)
 				{
-					SetCaret(gMC.x, gMC.y, CARET_EMPTY, DIR_LEFT);
+					SetCaret(gMC.x, gMC.y, 16, 0);
 					empty = 50;
 				}
 
@@ -561,14 +553,14 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 					SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y, 1);
 					SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y, 1);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 					SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y, 1);
 					SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y, 1);
 				}
@@ -578,14 +570,14 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 					SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y, 3);
 					SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y, 3);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 					SetBullet(bul_no, gMC.x - (3 * 0x200), gMC.y, 3);
 					SetBullet(bul_no, gMC.x + (3 * 0x200), gMC.y, 3);
 				}
@@ -595,14 +587,14 @@ void ShootBullet_Missile(int level, BOOL bSuper)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (6 * 0x200), gMC.y + (1 * 0x200), 0);
-					SetCaret(gMC.x - (12 * 0x200), gMC.y + (1 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (12 * 0x200), gMC.y + (1 * 0x200), 3, 0);
 					SetBullet(bul_no, gMC.x, gMC.y - (8 * 0x200), 0);
 					SetBullet(bul_no, gMC.x + (4 * 0x200), gMC.y - (1 * 0x200), 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (6 * 0x200), gMC.y + (1 * 0x200), 2);
-					SetCaret(gMC.x + (12 * 0x200), gMC.y + (1 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (12 * 0x200), gMC.y + (1 * 0x200), 3, 0);
 					SetBullet(bul_no, gMC.x, gMC.y - (8 * 0x200), 2);
 					SetBullet(bul_no, gMC.x - (4 * 0x200), gMC.y - (1 * 0x200), 2);
 				}
@@ -628,7 +620,7 @@ void ShootBullet_Bubblin1(void)
 
 			if (empty == 0)
 			{
-				SetCaret(gMC.x, gMC.y, CARET_EMPTY, DIR_LEFT);
+				SetCaret(gMC.x, gMC.y, 16, 0);
 				empty = 50;
 			}
 
@@ -640,12 +632,12 @@ void ShootBullet_Bubblin1(void)
 			if (gMC.direct == 0)
 			{
 				SetBullet(19, gMC.x - (1 * 0x200), gMC.y - (2 * 0x200), 1);
-				SetCaret(gMC.x - (1 * 0x200), gMC.y - (2 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (1 * 0x200), gMC.y - (2 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(19, gMC.x + (1 * 0x200), gMC.y - (2 * 0x200), 1);
-				SetCaret(gMC.x + (1 * 0x200), gMC.y - (2 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (1 * 0x200), gMC.y - (2 * 0x200), 3, 0);
 			}
 		}
 		else if (gMC.down)
@@ -653,12 +645,12 @@ void ShootBullet_Bubblin1(void)
 			if (gMC.direct == 0)
 			{
 				SetBullet(19, gMC.x - (1 * 0x200), gMC.y + (2 * 0x200), 3);
-				SetCaret(gMC.x - (1 * 0x200), gMC.y + (2 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (1 * 0x200), gMC.y + (2 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(19, gMC.x + (1 * 0x200), gMC.y + (2 * 0x200), 3);
-				SetCaret(gMC.x + (1 * 0x200), gMC.y + (2 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (1 * 0x200), gMC.y + (2 * 0x200), 3, 0);
 			}
 		}
 		else
@@ -666,12 +658,12 @@ void ShootBullet_Bubblin1(void)
 			if (gMC.direct == 0)
 			{
 				SetBullet(19, gMC.x - (6 * 0x200), gMC.y + (3 * 0x200), 0);
-				SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(19, gMC.x + (6 * 0x200), gMC.y + (3 * 0x200), 2);
-				SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 			}
 		}
 
@@ -694,7 +686,7 @@ void ShootBullet_Bubblin2(int level)
 	level += 18;
 
 	if (!(gKey & gKeyShot))
-		gMC.rensha = 6;
+		gMC.rensha = 0; //6
 
 	if (gKey & gKeyShot)
 	{
@@ -709,7 +701,7 @@ void ShootBullet_Bubblin2(int level)
 
 			if (empty == 0)
 			{
-				SetCaret(gMC.x, gMC.y, CARET_EMPTY, DIR_LEFT);
+				SetCaret(gMC.x, gMC.y, 16, 0);
 				empty = 50;
 			}
 
@@ -721,12 +713,12 @@ void ShootBullet_Bubblin2(int level)
 			if (gMC.direct == 0)
 			{
 				SetBullet(level, gMC.x - (3 * 0x200), gMC.y - (8 * 0x200), 1);
-				SetCaret(gMC.x - (3 * 0x200), gMC.y - (16 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (3 * 0x200), gMC.y - (16 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(level, gMC.x + (3 * 0x200), gMC.y - (8 * 0x200), 1);
-				SetCaret(gMC.x + (3 * 0x200), gMC.y - (16 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (3 * 0x200), gMC.y - (16 * 0x200), 3, 0);
 			}
 		}
 		else if (gMC.down)
@@ -734,12 +726,12 @@ void ShootBullet_Bubblin2(int level)
 			if (gMC.direct == 0)
 			{
 				SetBullet(level, gMC.x - (3 * 0x200), gMC.y + (8 * 0x200), 3);
-				SetCaret(gMC.x - (3 * 0x200), gMC.y + (16 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (3 * 0x200), gMC.y + (16 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(level, gMC.x + (3 * 0x200), gMC.y + (8 * 0x200), 3);
-				SetCaret(gMC.x + (3 * 0x200), gMC.y + (16 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (3 * 0x200), gMC.y + (16 * 0x200), 3, 0);
 			}
 		}
 		else
@@ -747,12 +739,12 @@ void ShootBullet_Bubblin2(int level)
 			if (gMC.direct == 0)
 			{
 				SetBullet(level, gMC.x - (6 * 0x200), gMC.y + (3 * 0x200), 0);
-				SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 			}
 			else
 			{
 				SetBullet(level, gMC.x + (6 * 0x200), gMC.y + (3 * 0x200), 2);
-				SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+				SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 			}
 		}
 
@@ -775,7 +767,7 @@ void ShootBullet_Sword(int level)
 	switch (level)
 	{
 		case 1:
-			bul_no = 25;
+			bul_no = 26;
 			break;
 
 		case 2:
@@ -783,7 +775,7 @@ void ShootBullet_Sword(int level)
 			break;
 
 		case 3:
-			bul_no = 27;
+			bul_no = 26;
 			break;
 	}
 
@@ -826,11 +818,11 @@ void ShootBullet_Nemesis(int level)
 			break;
 
 		case 2:
-			bul_no = 35;
+			bul_no = 34;
 			break;
 
 		case 3:
-			bul_no = 36;
+			bul_no = 34;
 			break;
 	}
 
@@ -850,12 +842,12 @@ void ShootBullet_Nemesis(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y - (12 * 0x200), 1);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y - (12 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y - (12 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y - (12 * 0x200), 1);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y - (12 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y - (12 * 0x200), 3, 0);
 				}
 			}
 			else if (gMC.down)
@@ -863,12 +855,12 @@ void ShootBullet_Nemesis(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y + (12 * 0x200), 3);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y + (12 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y + (12 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y + (12 * 0x200), 3);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y + (12 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y + (12 * 0x200), 3, 0);
 				}
 			}
 			else
@@ -876,12 +868,12 @@ void ShootBullet_Nemesis(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (22 * 0x200), gMC.y + (3 * 0x200), 0);
-					SetCaret(gMC.x - (16 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (16 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (22 * 0x200), gMC.y + (3 * 0x200), 2);
-					SetCaret(gMC.x + (16 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (16 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 				}
 			}
 
@@ -892,11 +884,11 @@ void ShootBullet_Nemesis(int level)
 					break;
 
 				case 2:
-					PlaySoundObject(49, SOUND_MODE_PLAY);
+					PlaySoundObject(117, SOUND_MODE_PLAY);
 					break;
 
 				case 3:
-					PlaySoundObject(60, SOUND_MODE_PLAY);
+					PlaySoundObject(117, SOUND_MODE_PLAY);
 					break;
 			}
 		}
@@ -1008,12 +1000,12 @@ void ShootBullet_Spur(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), 1);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y - (8 * 0x200), 3, 0);
 				}
 			}
 			else if (gMC.down)
@@ -1021,12 +1013,12 @@ void ShootBullet_Spur(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (1 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), 3);
-					SetCaret(gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (1 * 0x200), gMC.y + (8 * 0x200), 3, 0);
 				}
 			}
 			else
@@ -1034,12 +1026,12 @@ void ShootBullet_Spur(int level)
 				if (gMC.direct == 0)
 				{
 					SetBullet(bul_no, gMC.x - (6 * 0x200), gMC.y + (3 * 0x200), 0);
-					SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x - (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 				}
 				else
 				{
 					SetBullet(bul_no, gMC.x + (6 * 0x200), gMC.y + (3 * 0x200), 2);
-					SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), CARET_SHOOT, DIR_LEFT);
+					SetCaret(gMC.x + (12 * 0x200), gMC.y + (3 * 0x200), 3, 0);
 				}
 			}
 
@@ -1118,11 +1110,11 @@ void ShootBullet(void)
 					break;
 
 				case 2:
-					ShootBullet_Bubblin2(2);
+					ShootBullet_Bubblin1();
 					break;
 
 				case 3:
-					ShootBullet_Bubblin2(3);
+					ShootBullet_Bubblin1();
 					break;
 			}
 

@@ -15,6 +15,7 @@
 #include "Draw.h"
 #include "Game.h"
 #include "Triangle.h"
+#include "Map.h"
 
 #define CARET_MAX 0x40
 
@@ -33,6 +34,7 @@ struct CARET
 	int ani_wait;
 	int view_left;
 	int view_top;
+	int count1;
 	RECT rect;
 };
 
@@ -63,7 +65,13 @@ CARET_TABLE gCaretTable[] = {
 	{20 * 0x200, 20 * 0x200}, // CARET_UNKNOWN
 	{ 4 * 0x200,  4 * 0x200}, // CARET_PROJECTILE_DISSIPATION_TINY
 	{20 * 0x200,  4 * 0x200}, // CARET_EMPTY
-	{52 * 0x200,  4 * 0x200}  // CARET_PUSH_JUMP_KEY
+	{52 * 0x200,  4 * 0x200}, // CARET_PUSH_JUMP_KEY
+	{16 * 0x200, 16 * 0x200},
+	{16 * 0x200, 16 * 0x200},
+	{ 8 * 0x200,  8 * 0x200},
+	{ 8 * 0x200,  8 * 0x200},
+	{ 8 * 0x200,  8 * 0x200},
+	{ 8 * 0x200,  8 * 0x200},
 };
 
 void InitCaret(void)
@@ -77,12 +85,11 @@ void ActCaret00(CARET *crt)
 	(void)crt;
 }
 
-// Bubble
 void ActCaret01(CARET *crt)
 {
 	RECT rcLeft[4] = {
-		{ 0, 64,  8, 72},
-		{ 8, 64, 16, 72},
+		{0, 64, 8, 72},
+		{8, 64, 16, 72},
 		{16, 64, 24, 72},
 		{24, 64, 32, 72},
 	};
@@ -112,23 +119,22 @@ void ActCaret01(CARET *crt)
 		if (++crt->ani_no > 3)
 		{
 			crt->cond = 0;
-		#ifdef FIX_MAJOR_BUGS
+		#ifdef FIX_BUGS
 			return;	// The code below will use 'ani_no' to access 'rcLeft' and 'rcRight', even though it's now too high
 		#endif
 		}
 	}
 
-	if (crt->direct == DIR_LEFT)
+	if (crt->direct == 0)
 		crt->rect = rcLeft[crt->ani_no];
 	else
 		crt->rect = rcRight[crt->ani_no];
 }
 
-// Projectile dissipation
 void ActCaret02(CARET *crt)
 {
 	RECT rect_left[4] = {
-		{ 0, 32, 16, 48},
+		{0, 32, 16, 48},
 		{16, 32, 32, 48},
 		{32, 32, 48, 48},
 		{48, 32, 64, 48},
@@ -142,14 +148,14 @@ void ActCaret02(CARET *crt)
 	};
 
 	RECT rect_up[3] = {
-		{ 0, 32, 16, 48},
+		{0, 32, 16, 48},
 		{32, 32, 48, 48},
 		{16, 32, 32, 48},
 	};
 
 	switch (crt->direct)
 	{
-		case DIR_LEFT:
+		case 0:
 			crt->ym -= 0x10;
 			crt->y += crt->ym;
 
@@ -162,7 +168,7 @@ void ActCaret02(CARET *crt)
 			if (crt->ani_no > 3)
 			{
 				crt->cond = 0;
-			#ifdef FIX_MAJOR_BUGS
+			#ifdef FIX_BUGS
 				return;	// The code below will use 'ani_no' to access 'rect_left', even though it's now too high
 			#endif
 			}
@@ -170,7 +176,7 @@ void ActCaret02(CARET *crt)
 			crt->rect = rect_left[crt->ani_no];
 			break;
 
-		case DIR_RIGHT:
+		case 2:
 			if (++crt->ani_wait > 2)
 			{
 				crt->ani_wait = 0;
@@ -180,7 +186,7 @@ void ActCaret02(CARET *crt)
 			if (crt->ani_no > 3)
 			{
 				crt->cond = 0;
-			#ifdef FIX_MAJOR_BUGS
+			#ifdef FIX_BUGS
 				return;	// The code below will use 'ani_no' to access 'rect_right', even though it's now too high
 			#endif
 			}
@@ -188,7 +194,7 @@ void ActCaret02(CARET *crt)
 			crt->rect = rect_right[crt->ani_no];
 			break;
 
-		case DIR_UP:
+		case 1:
 			crt->rect = rect_up[++crt->ani_wait / 2 % 3];
 
 			if (crt->ani_wait > 24)
@@ -198,11 +204,10 @@ void ActCaret02(CARET *crt)
 	}
 }
 
-// Shoot
 void ActCaret03(CARET *crt)
 {
 	RECT rect[4] = {
-		{ 0, 48, 16, 64},
+		{0, 48, 16, 64},
 		{16, 48, 32, 64},
 		{32, 48, 48, 64},
 		{48, 48, 64, 64},
@@ -215,7 +220,7 @@ void ActCaret03(CARET *crt)
 		if (++crt->ani_no > 3)
 		{
 			crt->cond = 0;
-		#ifdef FIX_MAJOR_BUGS
+		#ifdef FIX_BUGS
 			return;	// The code below will use 'ani_no' to access 'rect', even though it's now too high
 		#endif
 		}
@@ -224,21 +229,19 @@ void ActCaret03(CARET *crt)
 	crt->rect = rect[crt->ani_no];
 }
 
-// Snake after-image? This doesn't seem to be used.
 void ActCaret04(CARET *crt)
 {
 	RECT rect[9] = {
-		// Left
-		{64, 32,  80, 48},
-		{80, 32,  96, 48},
+		{64, 32, 80, 48},
+		{80, 32, 96, 48},
 		{96, 32, 112, 48},
-		// Up
-		{64, 48,  80, 64},
-		{80, 48,  96, 64},
+
+		{64, 48, 80, 64},
+		{80, 48, 96, 64},
 		{96, 48, 112, 64},
-		// Right
-		{64, 64,  80, 80},
-		{80, 64,  96, 80},
+
+		{64, 64, 80, 80},
+		{80, 64, 96, 80},
 		{96, 64, 112, 80},
 	};
 
@@ -249,7 +252,7 @@ void ActCaret04(CARET *crt)
 		if (++crt->ani_no > 2)
 		{
 			crt->cond = 0;
-		#ifdef FIX_MAJOR_BUGS
+		#ifdef FIX_BUGS
 			return;	// The code below will use 'ani_no' to access 'rect', even though it's now too high
 		#endif
 		}
@@ -258,7 +261,6 @@ void ActCaret04(CARET *crt)
 	crt->rect = rect[(crt->direct * 3) + crt->ani_no];
 }
 
-// 'Zzz' - snoring
 void ActCaret05(CARET *crt)
 {
 	RECT rect[7] = {
@@ -280,7 +282,7 @@ void ActCaret05(CARET *crt)
 	if (crt->ani_no > 6)
 	{
 		crt->cond = 0;
-	#ifdef FIX_MAJOR_BUGS
+	#ifdef FIX_BUGS
 		return;	// The code below will use 'ani_no' to access 'rect', even though it's now too high
 	#endif
 	}
@@ -291,18 +293,15 @@ void ActCaret05(CARET *crt)
 	crt->rect = rect[crt->ani_no];
 }
 
-// No ActCaret06...
-
-// Exhaust (used by the Booster and hoverbike)
-void ActCaret07(CARET *crt)
+void ActCaret07(CARET *crt) // Booster smoke
 {
 	RECT rcLeft[7] = {
-		{ 56, 0,  64, 8},
-		{ 64, 0,  72, 8},
-		{ 72, 0,  80, 8},
-		{ 80, 0,  88, 8},
-		{ 88, 0,  96, 8},
-		{ 96, 0, 104, 8},
+		{56, 0, 64, 8},
+		{64, 0, 72, 8},
+		{72, 0, 80, 8},
+		{80, 0, 88, 8},
+		{88, 0, 96, 8},
+		{96, 0, 104, 8},
 		{104, 0, 112, 8},
 	};
 
@@ -313,7 +312,7 @@ void ActCaret07(CARET *crt)
 		if (++crt->ani_no > 6)
 		{
 			crt->cond = 0;
-		#ifdef FIX_MAJOR_BUGS
+		#ifdef FIX_BUGS
 			return;	// The code below will use 'ani_no' to access 'rcLeft', even though it's now too high
 		#endif
 		}
@@ -323,34 +322,32 @@ void ActCaret07(CARET *crt)
 
 	switch (crt->direct)
 	{
-		case DIR_LEFT:
+		case 0:
 			crt->x -= 2 * 0x200;
 			break;
-		case DIR_UP:
+		case 1:
 			crt->y -= 2 * 0x200;
 			break;
-		case DIR_RIGHT:
+		case 2:
 			crt->x += 2 * 0x200;
 			break;
-		case DIR_DOWN:
+		case 3:
 			crt->y += 2 * 0x200;
 			break;
 	}
 }
 
-// Drowned Quote
 void ActCaret08(CARET *crt)
 {
 	RECT rcLeft = {16, 80, 32, 96};
 	RECT rcRight = {32, 80, 48, 96};
 
-	if (crt->direct == DIR_LEFT)
+	if (crt->direct == 0)
 		crt->rect = rcLeft;
 	else
 		crt->rect = rcRight;
 }
 
-// The '?' that appears when you press the down key
 void ActCaret09(CARET *crt)
 {
 	RECT rcLeft = {0, 80, 16, 96};
@@ -362,28 +359,27 @@ void ActCaret09(CARET *crt)
 	if (crt->ani_wait == 32)
 		crt->cond = 0;
 
-	if (crt->direct == DIR_LEFT)
+	if (crt->direct == 0)
 		crt->rect = rcLeft;
 	else
 		crt->rect = rcRight;
 }
 
-// 'Level Up!'
 void ActCaret10(CARET *crt)
 {
 	RECT rcLeft[2] = {
-		{0,  0, 56, 16},
+		{0, 0, 56, 16},
 		{0, 16, 56, 32},
 	};
 
 	RECT rcRight[2] = {
-		{0,  96, 56, 112},
+		{0, 96, 56, 112},
 		{0, 112, 56, 128},
 	};
 
 	++crt->ani_wait;
 
-	if (crt->direct == DIR_LEFT)
+	if (crt->direct == 0)
 	{
 		if (crt->ani_wait < 20)
 			crt->y -= 2 * 0x200;
@@ -400,13 +396,12 @@ void ActCaret10(CARET *crt)
 			crt->cond = 0;
 	}
 
-	if (crt->direct == DIR_LEFT)
+	if (crt->direct == 0)
 		crt->rect = rcLeft[crt->ani_wait / 2 % 2];
 	else
 		crt->rect = rcRight[crt->ani_wait / 2 % 2];
 }
 
-// Red hurt particles (used by bosses and invisible hidden pickups)
 void ActCaret11(CARET *crt)
 {
 	unsigned char deg;
@@ -423,12 +418,12 @@ void ActCaret11(CARET *crt)
 	crt->y += crt->ym;
 
 	RECT rcRight[7] = {
-		{ 56, 8,  64, 16},
-		{ 64, 8,  72, 16},
-		{ 72, 8,  80, 16},
-		{ 80, 8,  88, 16},
-		{ 88, 8,  96, 16},
-		{ 96, 8, 104, 16},
+		{56, 8, 64, 16},
+		{64, 8, 72, 16},
+		{72, 8, 80, 16},
+		{80, 8, 88, 16},
+		{88, 8, 96, 16},
+		{96, 8, 104, 16},
 		{104, 8, 112, 16},
 	};
 
@@ -439,7 +434,7 @@ void ActCaret11(CARET *crt)
 		if (++crt->ani_no > 6)
 		{
 			crt->cond = 0;
-		#ifdef FIX_MAJOR_BUGS
+		#ifdef FIX_BUGS
 			return;	// The code below will use 'ani_no' to access 'rcRight', even though it's now too high
 		#endif
 		}
@@ -448,22 +443,25 @@ void ActCaret11(CARET *crt)
 	crt->rect = rcRight[crt->ani_no];
 }
 
-// Missile Launcher explosion flash
 void ActCaret12(CARET *crt)
 {
-	RECT rcLeft[2] = {
+	RECT rcLeft[5] = {
+		{0, 193, 32, 225},
 		{112, 0, 144, 32},
+		{64, 192, 96, 225},
 		{144, 0, 176, 32},
+		//{144, 192, 176, 225},
+		{184, 192, 216, 225},
 	};
 
 	if (++crt->ani_wait > 2)
 	{
 		crt->ani_wait = 0;
 
-		if (++crt->ani_no > 1)
+		if (++crt->ani_no > 4)
 		{
 			crt->cond = 0;
-		#ifdef FIX_MAJOR_BUGS
+		#ifdef FIX_BUGS
 			return;	// The code below will use 'ani_no' to access 'rcLeft', even though it's now too high
 		#endif
 		}
@@ -472,7 +470,6 @@ void ActCaret12(CARET *crt)
 	crt->rect = rcLeft[crt->ani_no];
 }
 
-// Particles used when Quote jumps into the ceiling, and also used by the Demon Crown and Ballos's puppy
 void ActCaret13(CARET *crt)
 {
 	RECT rcLeft[2] = {
@@ -486,12 +483,12 @@ void ActCaret13(CARET *crt)
 
 		switch (crt->direct)
 		{
-			case DIR_LEFT:
+			case 0:
 				crt->xm = Random(-0x600, 0x600);
 				crt->ym = Random(-0x200, 0x200);
 				break;
 
-			case DIR_UP:
+			case 1:
 				crt->ym = -0x200 * Random(1, 3);
 				break;
 		}
@@ -499,7 +496,7 @@ void ActCaret13(CARET *crt)
 
 	switch (crt->direct)
 	{
-		case DIR_LEFT:
+		case 0:
 			crt->xm = (crt->xm * 4) / 5;
 			crt->ym = (crt->ym * 4) / 5;
 			break;
@@ -513,16 +510,12 @@ void ActCaret13(CARET *crt)
 
 	crt->rect = rcLeft[crt->ani_wait / 2 % 2];
 
-	if (crt->direct == DIR_OTHER)
+	if (crt->direct == 5)
 		crt->x -= 4 * 0x200;
 }
 
-// Broken (unknown and unused)
 void ActCaret14(CARET *crt)
 {
-	// These rects are invalid.
-	// However, notably, there are 5 unused 40x40 sprites at the bottom of Caret.pbm.
-	// Perhaps those were originally at these coordinates.
 	RECT rect[5] = {
 		{0, 96, 40, 136},
 		{40, 96, 80, 136},
@@ -538,7 +531,7 @@ void ActCaret14(CARET *crt)
 		if (++crt->ani_no > 4)
 		{
 			crt->cond = 0;
-		#ifdef FIX_MAJOR_BUGS
+		#ifdef FIX_BUGS
 			return;	// The code below will use 'ani_no' to access 'rect', even though it's now too high
 		#endif
 		}
@@ -547,12 +540,11 @@ void ActCaret14(CARET *crt)
 	crt->rect = rect[crt->ani_no];
 }
 
-// Tiny version of the projectile dissipation effect
 void ActCaret15(CARET *crt)
 {
 	RECT rcLeft[4] = {
-		{ 0, 72,  8, 80},
-		{ 8, 72, 16, 80},
+		{0, 72, 8, 80},
+		{8, 72, 16, 80},
 		{16, 72, 24, 80},
 		{24, 72, 32, 80},
 	};
@@ -564,7 +556,7 @@ void ActCaret15(CARET *crt)
 		if (++crt->ani_no > 3)
 		{
 			crt->cond = 0;
-		#ifdef FIX_MAJOR_BUGS
+		#ifdef FIX_BUGS
 			return;	// The code below will use 'ani_no' to access 'rcLeft', even though it's now too high
 		#endif
 		}
@@ -573,11 +565,10 @@ void ActCaret15(CARET *crt)
 	crt->rect = rcLeft[crt->ani_no];
 }
 
-// 'Empty!'
 void ActCaret16(CARET *crt)
 {
 	RECT rcLeft[2] = {
-		{104,  96, 144, 104},
+		{104, 96, 144, 104},
 		{104, 104, 144, 112},
 	};
 
@@ -590,7 +581,6 @@ void ActCaret16(CARET *crt)
 	crt->rect = rcLeft[crt->ani_wait / 2 % 2];
 }
 
-// 'PUSH JUMP KEY!' (unused)
 void ActCaret17(CARET *crt)
 {
 	RECT rcLeft[2] = {
@@ -607,6 +597,190 @@ void ActCaret17(CARET *crt)
 		crt->rect = rcLeft[1];
 }
 
+void ActCaret18(CARET* crt)
+{
+	RECT rcLeft[7] = {
+		{0, 153, 16, 169},
+		{16, 153, 32, 169},
+		{32, 153, 48, 169},
+		{48, 153, 64, 169},
+		{64, 153, 80, 169},
+		{80, 153, 96, 169},
+		{96, 153, 112, 169}
+	};
+
+	switch (crt->act_no)
+	{
+	case 0:
+		crt->ym = Random(-0x500, 0x500);
+		crt->xm = Random(-0x500, 0x500);
+		crt->act_no = 1;
+	case 1:
+		crt->ym += 0x20;
+		crt->rect = rcLeft[crt->ani_no];
+		
+		break;
+	}
+
+	crt->x += crt->xm;
+	crt->y += crt->ym;
+
+	//crt->rect = rcLeft[0];
+	crt->rect = rcLeft[crt->ani_no];
+	if (++crt->ani_wait > 6) // Animation counter, how many frames until we advance to next frame
+	{
+		crt->ani_wait = 0; // Reset counter
+		++crt->ani_no; // Increase animation frame by one
+	}
+	if (crt->ani_no > 6)
+	{
+		crt->cond = 0;
+		return;
+	}
+}
+
+void ActCaret19(CARET* crt)
+{
+	RECT rect[4] = {
+		{112, 32, 128, 48},
+		{128, 32, 144, 48},
+		{144, 32, 160, 48},
+		{160, 32, 176, 48},
+	};
+
+	if (++crt->ani_wait > 2)
+	{
+		crt->ani_wait = 0;
+
+		if (++crt->ani_no > 3)
+		{
+			crt->cond = 0;
+#ifdef FIX_BUGS
+			return;	// The code below will use 'ani_no' to access 'rect', even though it's now too high
+#endif
+		}
+	}
+
+	crt->rect = rect[crt->ani_no];
+}
+
+void ActCaret20(CARET* crt) // Splash caret
+{
+	RECT rect[4] = {
+		{0, 65, 8,72},
+		{8, 65, 16, 72},
+		{16, 65, 24, 72},
+		{24, 65, 32, 72},
+
+	};
+	//crt->ym += 0x20;
+	//crt->ani_no = Random(0, 4);
+	crt->rect = rect[crt->ani_no];
+	if (++crt->ani_wait > 6) // Animation counter, how many frames until we advance to next frame
+	{
+		crt->ani_wait = 0; // Reset counter
+		++crt->ani_no; // Increase animation frame by one
+	}
+	if (crt->ani_no > 3)
+	{
+		crt->ani_no = 3;
+		crt->cond = 0;
+	}
+
+	switch (crt->act_no)
+	{
+	case 0:
+		crt->ym = Random(-0x200, 0x80);
+		crt->xm = Random(-0x200, 0x200);
+		crt->act_no = 1;
+	case 1:
+		crt->ym += 0x20;
+		crt->rect = rect[crt->ani_no];
+		
+		break;
+	}
+
+	if (crt->ym > 0x5FF)
+		crt->ym = 0x5FF;
+	crt->x += crt->xm;
+	crt->y += crt->ym;
+    
+	crt->rect = rect[crt->ani_no];
+
+	if (crt->direct == 2)
+	{
+		crt->rect.top += 2;
+		crt->rect.bottom += 2;
+	}
+
+	/*if (++crt->act_wait > 10)
+	{
+		if (crt->flag & 1)
+			crt->cond = 0;
+		if (crt->flag & 4)
+			crt->cond = 0;
+		if (crt->flag & 8)
+			crt->cond = 0;
+		if (crt->flag & 0x100)
+			crt->cond = 0;
+	}*/
+
+	if (crt->y > gMap.length * 0x200 * 0x10)
+		crt->cond = 0;
+}
+void ActCaret21(CARET* crt)
+{
+	RECT rect[1] = {
+		{128, 120, 136, 128},
+	};
+
+	if (++crt->count1 > 30)
+		crt->cond = 0;
+
+	if (crt->count1 < 3)
+		crt->ym = -8 * 0x200;
+	else
+		crt->ym = 0;
+
+	crt->y += crt->ym;
+	crt->rect = rect[crt->ani_no];
+}
+// I FUCKING HATE THIS
+void ActCaret22(CARET* crt)
+{
+	RECT rect[1] = {
+		{136, 120, 144, 128},
+	};
+
+	if (++crt->count1 > 30)
+		crt->cond = 0;
+
+	if (crt->count1 < 3)
+		crt->ym = -8 * 0x200;
+	else
+		crt->ym = 0;
+
+	crt->y += crt->ym;
+	crt->rect = rect[crt->ani_no];
+}
+void ActCaret23(CARET* crt)
+{
+	RECT rect[1] = {
+		{144, 120, 152, 128},
+	};
+
+	if (++crt->count1 > 30)
+		crt->cond = 0;
+
+	if (crt->count1 < 3)
+		crt->ym = -8 * 0x200;
+	else
+		crt->ym = 0;
+
+	crt->y += crt->ym;
+	crt->rect = rect[crt->ani_no];
+}
+
 typedef void (*CARETFUNCTION)(CARET*);
 CARETFUNCTION gpCaretFuncTbl[] =
 {
@@ -616,7 +790,7 @@ CARETFUNCTION gpCaretFuncTbl[] =
 	ActCaret03,
 	ActCaret04,
 	ActCaret05,
-	ActCaret04, // Interestingly, this slot is a duplicate
+	ActCaret04,
 	ActCaret07,
 	ActCaret08,
 	ActCaret09,
@@ -627,7 +801,13 @@ CARETFUNCTION gpCaretFuncTbl[] =
 	ActCaret14,
 	ActCaret15,
 	ActCaret16,
-	ActCaret17
+	ActCaret17,
+	ActCaret18,
+	ActCaret19,
+	ActCaret20,
+	ActCaret21,
+	ActCaret22,
+	ActCaret23,
 };
 
 void ActCaret(void)

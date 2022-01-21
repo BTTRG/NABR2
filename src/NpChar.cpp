@@ -174,7 +174,7 @@ void SetDestroyNpChar(int x, int y, int w, int num)
 	{
 		offset_x = Random(-w, w) * 0x200;
 		offset_y = Random(-w, w) * 0x200;
-		SetNpChar(NPC_SMOKE, x + offset_x, y + offset_y, 0, 0, 0, NULL, 0x100);
+		SetCaret(x + offset_x, y + offset_y, 18, 0);
 	}
 
 	// Flash effect
@@ -193,7 +193,7 @@ void SetDestroyNpCharUp(int x, int y, int w, int num)
 	{
 		offset_x = Random(-w, w) * 0x200;
 		offset_y = Random(-w, w) * 0x200;
-		SetNpChar(4, x + offset_x, y + offset_y, 0, 0, 1, NULL, 0x100);
+		SetCaret(x + offset_x, y + offset_y, 18, 0);
 	}
 
 	// Flash effect

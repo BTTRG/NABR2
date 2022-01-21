@@ -99,7 +99,7 @@ void PutFramePerSecound(void)
 	if (bFPS)
 	{
 		const unsigned long fps = CountFramePerSecound();
-		PutNumber4(WINDOW_WIDTH - 40, 8, fps, FALSE);
+		PutNumber4(WINDOW_WIDTH - 32, 0, fps, FALSE);
 	}
 }
 
