@@ -364,7 +364,7 @@ void PutCampObject(void)
 	++flash;
 
 	if (gCampActive == FALSE)
-		PutBitmap3(&rcView, PixelToScreenCoord((gSelectedArms * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 96), &rcCur1[(flash / 2) % 2], SURFACE_ID_TEXT_BOX);
+		PutBitmap3(&rcView, PixelToScreenCoord((gSelectedArms * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 96), &rcCur1[1], SURFACE_ID_TEXT_BOX);
 	else
 		PutBitmap3(&rcView, PixelToScreenCoord((gSelectedArms * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 96), &rcCur1[1], SURFACE_ID_TEXT_BOX);
 
@@ -375,22 +375,22 @@ void PutCampObject(void)
 			break;	// Invalid weapon
 
 		// Get icon rect for next weapon
-		rcArms.left = (gArmsData[i].code % 16) * 16;
-		rcArms.right = rcArms.left + 16;
-		rcArms.top = ((gArmsData[i].code) / 16) * 16;
+		rcArms.left = (gArmsData[i].code % 32) * 32;
+		rcArms.right = rcArms.left + 32;
+		rcArms.top = ((gArmsData[i].code) / 32) * 32;
 		rcArms.bottom = rcArms.top + 16;
 
 		// Draw the icon, slash and "Lv"
 		PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 96), &rcArms, SURFACE_ID_ARMS_IMAGE);
-		PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 64), &rcPer, SURFACE_ID_TEXT_BOX);
-		PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 80), &rcLv, SURFACE_ID_TEXT_BOX);
-		PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 80, gArmsData[i].level, FALSE);
+		//PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 64), &rcPer, SURFACE_ID_TEXT_BOX);
+		//PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 80), &rcLv, SURFACE_ID_TEXT_BOX);
+		//PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 80, gArmsData[i].level, FALSE);
 
 		// Draw ammo
 		if (gArmsData[i].max_num)
 		{
 			PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 72, gArmsData[i].num, FALSE);
-			PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 64, gArmsData[i].max_num, FALSE);
+			//PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 64, gArmsData[i].max_num, FALSE);
 		}
 		else
 		{
