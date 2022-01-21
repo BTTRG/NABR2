@@ -217,123 +217,94 @@ void ActNpc001(NPCHAR *npc)
 			npc->rect = rcNo;
 }
 
-// Behemoth
+// Soap
 void ActNpc002(NPCHAR *npc)
 {
-	// Rects
-	RECT rcLeft[7] = {
-		{ 32, 0,  64, 24},
-		{  0, 0,  32, 24},
-		{ 32, 0,  64, 24},
-		{ 64, 0,  96, 24},
-		{ 96, 0, 128, 24},
-		{128, 0, 160, 24},
-		{160, 0, 192, 24},
+	RECT rcLeft[5] = {
+		{96, 32, 112, 48},  // Walking 1
+		{112, 32, 128, 48}, // Walking 2
+		{96, 32, 112, 48},  // Walking 3 (copied from frame 1)
+		{128, 32, 144, 48}, // Walking 4
+		{144, 32, 160, 48}, // Jumping
 	};
 
-	RECT rcRight[7] = {
-		{ 32, 24,  64, 48},
-		{  0, 24,  32, 48},
-		{ 32, 24,  64, 48},
-		{ 64, 24,  96, 48},
-		{ 96, 24, 128, 48},
-		{128, 24, 160, 48},
-		{160, 24, 192, 48},
+	RECT rcRight[5] = {
+		{96, 48, 112, 64},  // Walking 1
+		{112, 48, 128, 64}, // Walking 2
+		{96, 48, 112, 64},  // Walking 3 (copied from frame 1)
+		{128, 48, 144, 64}, // Walking 4
+		{144, 48, 160, 64}, // Jumping
 	};
-
-	// Turn when touching a wall
-	if (npc->flag & 1)
-		npc->direct = 2;
-	else if (npc->flag & 4)
-		npc->direct = 0;
-
 	switch (npc->act_no)
 	{
-		case 0: // Walking
-			if (npc->direct == 0)
-				npc->xm = -0x100;
-			else
-				npc->xm = 0x100;
-
-			if (++npc->ani_wait > 8)
+		case 0:
+			npc->ani_no = 0;
+			npc->ani_wait = 0;
+			npc->act_no = 1;
+			// Fallthrough
+		case 1:
+			if (npc->flag & 4) // Touching a right wall
 			{
-				npc->ani_wait = 0;
-				++npc->ani_no;
+				npc->direct = 0;
 			}
-
-			if (npc->ani_no > 3)
-				npc->ani_no = 0;
-
-			if (npc->shock)
+			if (npc->flag & 1) // Touching a left wall
 			{
-				npc->count1 = 0;
-				npc->act_no = 1;
+				npc->direct = 2;
+			}
+			if (npc->direct == 0) // Walking
+			{
+				//if (npc->flag & 0x64)
+					//npc->xm = -0.65 / 2 * 0x200;
+				//else
+					npc->xm = -0.65 * 0x200;
+			}
+			if (npc->direct == 2)
+			{
+				npc->xm = 0.65 * 0x200;
+			}
+			if (npc->flag & 8)
+			{
+				npc->ani_wait++;
+				if (npc->ani_wait > 4)
+				{
+					npc->ani_wait = 0;
+					npc->ani_no++;
+
+					if (npc->ani_no > 3)
+					{
+						npc->ani_no = 0;
+					}
+
+				}
+			}
+			/*else
+			{
 				npc->ani_no = 4;
-			}
-
-			break;
-
-		case 1: // Shot
-			npc->xm = (npc->xm * 7) / 8;
-
-			if (++npc->count1 > 40)
+			}*/
+			if (Random(0, 120) == 10 && npc->flag & 8) // Jump randomly if touching floor
 			{
-				if (npc->shock)
-				{
-					npc->count1 = 0;
-					npc->act_no = 2;
-					npc->ani_no = 6;
-					npc->ani_wait = 0;
-					npc->damage = 5;
-				}
-				else
-				{
-					npc->act_no = 0;
-					npc->ani_wait = 0;
-				}
+				npc->ym -= 0x5FF;
+				npc->act_no = 2; // Next state
 			}
 			break;
 
-		case 2: // Charge
-			if (npc->direct == 0)
-				npc->xm = -0x400;
-			else
-				npc->xm = 0x400;
+		case 2:
+			npc->ani_no = 4; // Set frame to jumping frame
+			npc->ani_wait = 0; // Reset animation timer
 
-			if (++npc->count1 > 200)
+			if (npc->flag & 8) // If touching floor, reset
 			{
-				npc->act_no = 0;
-				npc->damage = 1;
+				npc->act_no = 1;
 			}
-
-			if (++npc->ani_wait > 5)
-			{
-				npc->ani_wait = 0;
-				++npc->ani_no;
-			}
-
-			if (npc->ani_no > 6)
-			{
-				npc->ani_no = 5;
-				// These three lines are missing in the Linux port, because it's based on v1.0.0.4:
-				// https://www.cavestory.org/forums/threads/version-1-0-0-5-really-different-than-1-0-0-6.102/#post-3231
-				PlaySoundObject(26, SOUND_MODE_PLAY);
-				SetNpChar(4, npc->x, npc->y + (3 * 0x200), 0, 0, 0, NULL, 0x100);
-				SetQuake(8);
-			}
-			break;
 	}
 
-	// Gravity
-	npc->ym += 0x40;
-	if (npc->ym > 0x5FF)
+	npc->ym += 0x40; // Gravity
+	if (npc->ym > 0x5FF) // Terminal velocity
 		npc->ym = 0x5FF;
 
-	// Move
 	npc->x += npc->xm;
 	npc->y += npc->ym;
 
-	// Set framerect
 	if (npc->direct == 0)
 		npc->rect = rcLeft[npc->ani_no];
 	else
