@@ -104,7 +104,8 @@ void AddExpMyChar(int x)
 			gArmsData[gSelectedArms].exp = 0;
 		}
 	}*/
-	cion += x;
+	if (cion < 9999) // Cap Cion
+		cion += x;
 	/*if (x == 1) {
 		SetCaret(gMC.x, gMC.y, 21, 0);
 	}

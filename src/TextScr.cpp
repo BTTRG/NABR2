@@ -685,6 +685,8 @@ int TextScriptProc(void)
 					#endif
 
 						PlaySoundObject(38, SOUND_MODE_PLAY);
+						if (x > 9999)
+							x = 9999;
 						AddArmsData(w, x);
 						gTS.p_read += 13;
 					}
