@@ -221,6 +221,8 @@ BOOL LoadProfile(const char *name)
 	fread(profile.FLAG, 4, 1, fp);
 	fread(profile.flags, 1000, 1, fp);
 	profile.cion = File_ReadLE32(fp);
+	if (profile.cion > 9999)
+		profile.cion = 9999;
 
 	// Custom
 	fread(profile.extra_code, 0x10, 1, fp);
