@@ -77,7 +77,8 @@ BOOL AddArmsData(long code, long max_num)
 
 	// Set weapon and ammo
 	gArmsData[i].code = code;
-	gArmsData[i].max_num += max_num;
+	if (gArmsData[i].max_num < 9999)
+		gArmsData[i].max_num += max_num;
 	gArmsData[i].num += max_num;
 
 	// Cap the amount of current ammo to the maximum amount of ammo
@@ -315,6 +316,10 @@ void PutCampObject(void)
 	static unsigned int flash;
 
 	int i;
+	int j;
+	int k;
+	// I hate this with every bit of my soul
+	// But hey it works
 
 	/// Rect for the current weapon
 	RECT rcArms;
@@ -334,11 +339,8 @@ void PutCampObject(void)
 	/// Final rect drawn on the screen
 	RECT rcView = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
-	/// Cursor rect array for weapons, element [1] being for when the cursor is flashing
-	RECT rcCur1[2] = {{0, 88, 40, 128}, {40, 88, 80, 128}};
-
-	/// Cursor rect array for items, element [1] being for when the cursor is flashing
-	RECT rcCur2[2] = {{80, 88, 112, 104}, {80, 104, 112, 120}};
+	/// Cursor rect
+	RECT rcCur = {112, 88, 128, 104};
 
 	RECT rcTitle1 = {80, 48, 144, 56};
 	RECT rcTitle2 = {80, 56, 144, 64};
@@ -346,27 +348,44 @@ void PutCampObject(void)
 	RECT rcBoxBody = {0, 8, 244, 16};
 	RECT rcBoxBottom = {0, 16, 244, 24};
 
-	// Draw box
-	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 112), &rcBoxTop, SURFACE_ID_TEXT_BOX);
-	for (i = 1; i < 18; ++i)
-		PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord(((WINDOW_HEIGHT / 2) - 120) + ((i + 1) * 8)), &rcBoxBody, SURFACE_ID_TEXT_BOX);
-	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord(((WINDOW_HEIGHT / 2) - 120) + ((i + 1) * 8)), &rcBoxBottom, SURFACE_ID_TEXT_BOX);
+	RECT rcBoxLeft = {0, 0, 40, 24};
+	RECT rcBoxRight = {232, 0, 244, 24};
+
+	RECT rcBoxCharBox = {0, 88, 48, 128};
+	RECT rcMyChar = {0, 16, 16, 32};
+
+	// Draw item box
+	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 112 + 78), &rcBoxTop, SURFACE_ID_TEXT_BOX);
+	for (i = 1; i < 8; ++i)
+		PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord(((WINDOW_HEIGHT / 2) - 120) + ((i + 1) * 8) + 78), &rcBoxBody, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord(((WINDOW_HEIGHT / 2) - 120) + ((i + 1) * 8) + 78), &rcBoxBottom, SURFACE_ID_TEXT_BOX);
+
+	// Draw weapon box
+	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 112 + 54), &rcBoxTop, SURFACE_ID_TEXT_BOX);
+	for (j = 1; j < 2 ; ++j)
+		PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord(((WINDOW_HEIGHT / 2) - 120) + ((j + 1) * 8) + 54), &rcBoxBody, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord(((WINDOW_HEIGHT / 2) - 120) + ((j + 1) * 8) + 54), &rcBoxBottom, SURFACE_ID_TEXT_BOX);
+
+	// Draw MyChar box
+	//PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 112 + 8), &rcBoxCharBox, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord(38), PixelToScreenCoord(16), &rcBoxCharBox, SURFACE_ID_TEXT_BOX);
+
+	// Draw stats boxes
+	PutBitmap3(&rcView, PixelToScreenCoord(86), PixelToScreenCoord(8), &rcBoxLeft, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord(126), PixelToScreenCoord(8), &rcBoxRight, SURFACE_ID_TEXT_BOX);
+
+	PutBitmap3(&rcView, PixelToScreenCoord(86), PixelToScreenCoord(32), &rcBoxLeft, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord(126), PixelToScreenCoord(32), &rcBoxRight, SURFACE_ID_TEXT_BOX);
 
 	// Move titles
-	if (gCampTitleY > (WINDOW_HEIGHT / 2) - 104)
+	/*if (gCampTitleY > (WINDOW_HEIGHT / 2) - 104)
 		--gCampTitleY;
 
 	// Draw titles
-	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 112), PixelToScreenCoord(gCampTitleY), &rcTitle1, SURFACE_ID_TEXT_BOX);
-	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 112), PixelToScreenCoord(gCampTitleY + 52), &rcTitle2, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 112), PixelToScreenCoord(gCampTitleY + 32), &rcTitle1, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 112), PixelToScreenCoord(gCampTitleY + 76), &rcTitle2, SURFACE_ID_TEXT_BOX);*/
 
-	// Draw arms cursor
 	++flash;
-
-	if (gCampActive == FALSE)
-		PutBitmap3(&rcView, PixelToScreenCoord((gSelectedArms * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 96), &rcCur1[1], SURFACE_ID_TEXT_BOX);
-	else
-		PutBitmap3(&rcView, PixelToScreenCoord((gSelectedArms * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 96), &rcCur1[1], SURFACE_ID_TEXT_BOX);
 
 	// Draw weapons
 	for (i = 0; i < ARMS_MAX; ++i)
@@ -381,7 +400,7 @@ void PutCampObject(void)
 		rcArms.bottom = rcArms.top + 16;
 
 		// Draw the icon, slash and "Lv"
-		PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 96), &rcArms, SURFACE_ID_ARMS_IMAGE);
+		PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 96 + 40), &rcArms, SURFACE_ID_ARMS_IMAGE);
 		//PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 64), &rcPer, SURFACE_ID_TEXT_BOX);
 		//PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 80), &rcLv, SURFACE_ID_TEXT_BOX);
 		//PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 80, gArmsData[i].level, FALSE);
@@ -389,7 +408,7 @@ void PutCampObject(void)
 		// Draw ammo
 		if (gArmsData[i].max_num)
 		{
-			PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 72, gArmsData[i].num, FALSE);
+			PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 88 + 40, gArmsData[i].num, FALSE);
 			//PutNumber4((i * 40) + (WINDOW_WIDTH / 2) - 112, (WINDOW_HEIGHT / 2) - 64, gArmsData[i].max_num, FALSE);
 		}
 		else
@@ -399,12 +418,6 @@ void PutCampObject(void)
 			PutBitmap3(&rcView, PixelToScreenCoord((i * 40) + (WINDOW_WIDTH - 192) / 2), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 64), &rcNone, SURFACE_ID_TEXT_BOX);
 		}
 	}
-
-	// Draw items cursor
-	if (gCampActive == TRUE)
-		PutBitmap3(&rcView, PixelToScreenCoord(((gSelectedItem % 6) * 32) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord(((gSelectedItem / 6) * 16) + (WINDOW_HEIGHT / 2) - 44), &rcCur2[flash / 2 % 2], SURFACE_ID_TEXT_BOX);
-	else
-		PutBitmap3(&rcView, PixelToScreenCoord(((gSelectedItem % 6) * 32) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord(((gSelectedItem / 6) * 16) + (WINDOW_HEIGHT / 2) - 44), &rcCur2[1], SURFACE_ID_TEXT_BOX);
 
 	for (i = 0; i < ITEM_MAX; ++i)
 	{
@@ -417,8 +430,18 @@ void PutCampObject(void)
 		rcItem.top = (gItemData[i].code / 8) * 16;
 		rcItem.bottom = rcItem.top + 16;
 
-		PutBitmap3(&rcView, PixelToScreenCoord(((i % 6) * 32) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord(((i / 6) * 16) + (WINDOW_HEIGHT / 2) - 44), &rcItem, SURFACE_ID_ITEM_IMAGE);
+		PutBitmap3(&rcView, PixelToScreenCoord(((i % 6) * 32) + (WINDOW_WIDTH / 2) - 112), PixelToScreenCoord(((i / 6) * 16) + (WINDOW_HEIGHT / 2) - 28), &rcItem, SURFACE_ID_ITEM_IMAGE);
 	}
+
+	if (gCampActive == TRUE)
+		// Draw items cursor
+		PutBitmap3(&rcView, PixelToScreenCoord(((gSelectedItem % 6) * 32) + (WINDOW_WIDTH / 2) - 120), PixelToScreenCoord(((gSelectedItem / 6) * 16) + (WINDOW_HEIGHT / 2) - 28), &rcCur, SURFACE_ID_TEXT_BOX);
+	else
+		// Draw arms cursor
+		PutBitmap3(&rcView, PixelToScreenCoord((gSelectedArms * 40) + (WINDOW_WIDTH / 2) - 120), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 56), &rcCur, SURFACE_ID_TEXT_BOX);
+
+	// Draw MyChar
+	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122 + 14), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 112 + 20), &rcMyChar, SURFACE_ID_MY_CHAR);
 }
 
 int CampLoop(void)
