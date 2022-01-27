@@ -90,7 +90,7 @@ int MiniMapLoop(void)
 	int my_x;
 	int my_y;
 	unsigned char my_wait;
-	RECT my_rect = {0, 57, 1, 58};
+	RECT my_rect = {243, 25, 244, 26};
 
 	my_x = ((gMC.x / 0x200) + 8) / 16;
 	my_y = ((gMC.y / 0x200) + 8) / 16;

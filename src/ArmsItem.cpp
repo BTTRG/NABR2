@@ -22,6 +22,7 @@
 #include "Shoot.h"
 #include "Sound.h"
 #include "TextScr.h"
+#include "MyChar.h"
 
 ARMS gArmsData[ARMS_MAX];
 ITEM gItemData[ITEM_MAX];
@@ -348,11 +349,12 @@ void PutCampObject(void)
 	RECT rcBoxBody = {0, 8, 244, 16};
 	RECT rcBoxBottom = {0, 16, 244, 24};
 
-	RECT rcBoxLeft = {0, 0, 40, 24};
+	RECT rcBoxLeft = {0, 0, 48, 24};
 	RECT rcBoxRight = {232, 0, 244, 24};
 
 	RECT rcBoxCharBox = {0, 88, 48, 128};
 	RECT rcMyChar = {0, 16, 16, 32};
+	RECT rcCion = {128, 112, 152, 120};
 
 	// Draw item box
 	PutBitmap3(&rcView, PixelToScreenCoord((WINDOW_WIDTH / 2) - 122), PixelToScreenCoord((WINDOW_HEIGHT / 2) - 112 + 78), &rcBoxTop, SURFACE_ID_TEXT_BOX);
@@ -372,10 +374,30 @@ void PutCampObject(void)
 
 	// Draw stats boxes
 	PutBitmap3(&rcView, PixelToScreenCoord(86), PixelToScreenCoord(8), &rcBoxLeft, SURFACE_ID_TEXT_BOX);
-	PutBitmap3(&rcView, PixelToScreenCoord(126), PixelToScreenCoord(8), &rcBoxRight, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord(134), PixelToScreenCoord(8), &rcBoxRight, SURFACE_ID_TEXT_BOX);
 
 	PutBitmap3(&rcView, PixelToScreenCoord(86), PixelToScreenCoord(32), &rcBoxLeft, SURFACE_ID_TEXT_BOX);
-	PutBitmap3(&rcView, PixelToScreenCoord(126), PixelToScreenCoord(32), &rcBoxRight, SURFACE_ID_TEXT_BOX);
+	PutBitmap3(&rcView, PixelToScreenCoord(134), PixelToScreenCoord(32), &rcBoxRight, SURFACE_ID_TEXT_BOX);
+
+	// Draw stats
+	PutBitmap3(&grcGame, PixelToScreenCoord(120), PixelToScreenCoord(15), &rcCion, SURFACE_ID_TEXT_BOX);
+	PutNumber4(88, 15, cion, FALSE);
+	
+	RECT rcLife[2] = {
+		{120, 112, 128, 120},
+		{112, 112, 120, 120},
+	};
+	for (int i = 0; i < gMC.max_life - 1; i++) // For every 1 in max life, add 1 to i, and run the following code
+	{
+		// Put a heart
+		PutBitmap3(
+			&grcGame, // Target
+			// On the next two lines TT7 forgot PixelToScreenCoord, which is needed for the PutBitmap to work on resolutions other than 1x 
+			PixelToScreenCoord(96 + (8 * i)), // X position, offset by 8 for every 1 in i
+			PixelToScreenCoord(40), // Y position,
+			& rcLife[gMC.life - 1 > i], // Which rect to use, 'gMC.life - 1 > i' checks if  the current heart that is being drawn is full or not, returns 0 if it's not and 1 if it is
+			SURFACE_ID_TEXT_BOX); // Surface
+	}
 
 	// Move titles
 	/*if (gCampTitleY > (WINDOW_HEIGHT / 2) - 104)

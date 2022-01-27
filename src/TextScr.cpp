@@ -1419,26 +1419,26 @@ int TextScriptProc(void)
 					{
 						return enum_ESCRETURN_restart;
 					}
-										//CION commands
+					//CION commands
 					//Add X amount of cion
 					else if (IS_COMMAND('C','I','+'))
 					{
 						x = GetTextScriptNo(gTS.p_read + 4);
-						cion+= x;
+						cion += x;
 						gTS.p_read += 8;
 					}
 					//Remove X amount of cion
 					else if (IS_COMMAND('C','I','-'))
 					{
 						x = GetTextScriptNo(gTS.p_read + 4);
-						cion-= x;
+						cion -= x;
 						gTS.p_read += 8;
 					}
 					//Set cion to X (useful for removing all cions!)
 					else if (IS_COMMAND('C','I','S'))
 					{
 						x = GetTextScriptNo(gTS.p_read + 4);
-						cion= x;
+						cion = x;
 						gTS.p_read += 8;
 					}
 					//If cion is Greater than or Equal to X, go to event Y.

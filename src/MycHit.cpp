@@ -808,8 +808,8 @@ void HitMyCharNpChar(void)
 		if (hit != 0 && gNPC[i].code_char == 1)
 		{
 			PlaySoundObject(14, SOUND_MODE_PLAY);
-			// AddExpMyChar(gNPC[i].exp);
-			cion+= 1;
+			AddExpMyChar(gNPC[i].exp);
+			//cion+= 1;
 			gNPC[i].cond = 0;
 		}
 		if (hit != 0 && gNPC[i].code_char == 86)
